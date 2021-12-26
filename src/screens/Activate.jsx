@@ -3,11 +3,10 @@ import authSvg from "../assests/welcome.svg";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import jwt from "jsonwebtoken";
-import { authenticate, isAuth } from "../helpers/auth";
-import { Link, Redirect } from "react-router-dom";
+import { isAuth } from "../helpers/auth";
+import { Redirect } from "react-router-dom";
 
 const Activate = ({ match }) => {
-  console.log(match);
   const [formData, setFormData] = useState({
     username: "",
     token: "",
@@ -16,21 +15,21 @@ const Activate = ({ match }) => {
 
   useEffect(() => {
     let token = match.params.token;
-    let { username } = jwt.decode(token);
+    let { username, password } = jwt.decode(token);
 
     if (token) {
       setFormData({ ...formData, username, token });
     }
 
-    console.log(token, username);
+    console.log(token, password);
   }, [match.params]);
-  const { username, token, show } = formData;
+  const { username, token } = formData;
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     axios
-      .post(`${process.env.REACT_APP_API_URL}/activation`, {
+      .post("http://localhost:5000/api/activation", {
         token,
       })
       .then((res) => {

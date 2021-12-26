@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import authSvg from "../assests/auth.svg";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
-import { authenticate, isAuth } from "../helpers/auth";
-import { Link, Redirect } from "react-router-dom";
+import { isAuth } from "../helpers/auth";
+import { Redirect } from "react-router-dom";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -12,14 +12,14 @@ const Register = () => {
     username: "",
     email: "",
     phone: "",
-    password1: "",
+    password: "",
     password2: "",
     textChange: "Sign Up",
   });
 
   const {
     email,
-    password1,
+    password,
     firstname,
     lastname,
     username,
@@ -32,48 +32,50 @@ const Register = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (firstname && lastname && username && email && password1) {
-      if (password1 === password2) {
-        setFormData({ ...formData, textChange: "Submitting" });
-        axios
-          .post(`${process.env.REACT_APP_API_URL}/register`, {
-            firstname,
-            lastname,
-            username,
-            phone,
-            email,
-            password: password1,
-          })
-          .then((res) => {
-            setFormData({
-              ...formData,
-              firstname: "",
-              lastname: "",
-              username: "",
-              email: "",
-              phone: "",
-              password1: "",
-              password2: "",
-              textChange: "Submitted",
-            });
+    if (firstname && lastname && username && email && password) {
+      if (password === password2) {
+        if (password.length < 6) {
+          return toast.error("Password must be atleast six character");
+        } else {
+          setFormData({ ...formData, textChange: "Submitting" });
+          axios
+            .post("http://localhost:5000/api/register", {
+              firstname,
+              lastname,
+              username,
+              phone,
+              email,
+              password,
+            })
+            .then((res) => {
+              setFormData({
+                ...formData,
+                firstname: "",
+                lastname: "",
+                username: "",
+                email: "",
+                phone: "",
+                password: "",
+                textChange: "Submitted",
+              });
 
-            toast.success(res.data.message);
-          })
-          .catch((err) => {
-            setFormData({
-              ...formData,
-              firstname: "",
-              lastname: "",
-              username: "",
-              email: "",
-              phone: "",
-              password1: "",
-              password2: "",
-              textChange: "Sign Up",
+              toast.success(res.data.message);
+            })
+            .catch((err) => {
+              setFormData({
+                ...formData,
+                firstname: "",
+                lastname: "",
+                username: "",
+                email: "",
+                phone: "",
+                password: "",
+                textChange: "Sign Up",
+              });
+              console.log(err.response);
+              toast.error(err.response.data.errors);
             });
-            console.log(err.response);
-            toast.error(err.response.data.errors);
-          });
+        }
       } else {
         toast.error("Passwords don't matches");
       }
@@ -137,8 +139,8 @@ const Register = () => {
                   className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
                   type="password"
                   placeholder="Password"
-                  onChange={handleChange("password1")}
-                  value={password1}
+                  onChange={handleChange("password")}
+                  value={password}
                 />
                 <input
                   className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
