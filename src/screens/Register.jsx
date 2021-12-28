@@ -39,7 +39,7 @@ const Register = () => {
         } else {
           setFormData({ ...formData, textChange: "Submitting" });
           axios
-            .post("http://localhost:5000/api/register", {
+            .post(`${process.env.REACT_APP_API_URL}/register`, {
               firstname,
               lastname,
               username,
@@ -92,7 +92,7 @@ const Register = () => {
         <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
           <div className="mt-12 flex flex-col items-center">
             <h1 className="text-2xl xl:text-3xl font-extrabold">
-              git branch -M main Sign Up for Idea Next
+              Sign Up for Idea Next
             </h1>
 
             <form
