@@ -29,7 +29,7 @@ const Activate = ({ match }) => {
     e.preventDefault();
 
     axios
-      .post(`${process.env.REACT_APP_API_URL}/activate/${token}`, {
+      .post(`${process.env.REACT_APP_API_URL}/api/users/activation`, {
         token,
       })
       .then((res) => {
@@ -57,6 +57,7 @@ const Activate = ({ match }) => {
             </h1>
 
             <form
+              z
               className="w-full flex-1 mt-8 text-indigo-500"
               onSubmit={handleSubmit}
             >
