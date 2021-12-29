@@ -27,7 +27,6 @@ const Activate = ({ match }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     axios
       .post(`${process.env.REACT_APP_API_URL}/activation`, {
         token,
@@ -44,7 +43,6 @@ const Activate = ({ match }) => {
         toast.error(err.response.data.errors);
       });
   };
-
   return (
     <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
       {isAuth() ? <Redirect to="/" /> : null}
